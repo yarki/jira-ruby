@@ -55,6 +55,15 @@ module JIRA
         end
       end
 
+      def all_worklogs
+        search_url = "#{client.options[:rest_base_path]}/issue/#{id}/worklog"
+        response = client.get(search_url)
+        json = self.class.parse_json(response.body)
+        json['worklogs'].map do |worklog|
+          JIRA::Resource::Worklog.new(client, attrs: worklog, issue: self)
+        end
+      end
+
       def respond_to?(method_name)
         if attrs.keys.include?('fields') && attrs['fields'].keys.include?(method_name.to_s)
           true
