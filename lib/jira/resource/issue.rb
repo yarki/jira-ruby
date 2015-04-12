@@ -64,6 +64,14 @@ module JIRA
         end
       end
 
+      def has_parent?
+        fields.include?('parent')
+      end
+
+      def parent
+        client.Issue.find(fields['parent']['id'])
+      end
+
       def respond_to?(method_name)
         if attrs.keys.include?('fields') && attrs['fields'].keys.include?(method_name.to_s)
           true
