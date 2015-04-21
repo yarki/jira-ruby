@@ -72,6 +72,18 @@ module JIRA
         client.Issue.find(fields['parent']['id'])
       end
 
+      def has_linked_epic?
+        !linked_epic_key.nil?
+      end
+
+      def linked_epic_key
+        fields['customfield_14500']
+      end
+
+      def linked_epic
+        client.Issue.find(fields['customfield_14500'])
+      end
+
       def respond_to?(method_name)
         if attrs.keys.include?('fields') && attrs['fields'].keys.include?(method_name.to_s)
           true
